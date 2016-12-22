@@ -74,7 +74,7 @@ def multithreaded_train(epochs=50,threads=2):#50 aproximaciones,8 hilos por defa
     data = init_sin_dataset()#valores de entrenamiento
     
     for n in range(threads):
-        nets.append(pybrain_tools.buildNetwork(1, 40, 1))#ajusta la red n a 1 entradas,2 capas ocultas,1 salida
+        nets.append(pybrain_tools.buildNetwork(1, 20, 1))#ajusta la red n a 1 entradas,2 capas ocultas,1 salida
         nets[n].randomize()#ajusta aleatoriamente los parametros de la red n
         print 'entrenando red multihilo {} '.format(n)
         trainers.append(pybrain_rprop.RPropMinusTrainer(nets[n], dataset=data))#red n, datos de entrenamiento
@@ -92,25 +92,19 @@ def multithreaded_train(epochs=50,threads=2):#50 aproximaciones,8 hilos por defa
 
 
 if __name__ == '__main__':
-    epochs = 1500#numero de iteraciones de la red
-    threads = 2#numero de hilos/procesos
-    iterations = 2#numero de veces que se repite la funcion en timeit
-    ''' standard
+    epochs = 2500#numero de iteraciones de la red
+    threads = 4#numero de hilos/procesos
+    iterations_standard = 4#numero de veces que se repite la funcion en timeit
+    iterations_multi = 1#numero de veces que se repite la funcion en timeit
+    #''' standard 4 iteracion en timeit
     t1 = timeit.timeit("standard_train({})".format(epochs),
                        setup="from __main__ import standard_train",
-                       number=iterations)
-                       
-    '''
-    #''' multihilo 
+                       number=iterations_standard)
+    #''' multihilo 1 iteracion en timeit
     tn = timeit.timeit("multithreaded_train({},{})".format(epochs,threads),
                        setup="from __main__ import multithreaded_train",
-                       number=iterations)
-    ''' multihilo por default
-    tn = timeit.timeit("multithreaded_train()",
-                       setup="from __main__ import multithreaded_train",
-                       number=iterations)
-    '''
-    #print "Execution time for single threaded training: {} seconds.".format(t1)
+                       number=iterations_multi)
+    print "Execution time for single threaded training: {} seconds.".format(t1)
     print "Execution time for {} multi threaded training: {} seconds.".format(threads,tn)
     pl.show()
 
