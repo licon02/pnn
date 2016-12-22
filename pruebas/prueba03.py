@@ -1,4 +1,6 @@
 #!/usr/bin/python
+#prueba de red LSTM
+#genera grafica de las senales
 from __future__ import division
 import numpy as np
 import matplotlib.pyplot as plt
@@ -52,7 +54,7 @@ plt.ylim(1.5*np.min(yout),1.5*np.max(yout))
 
 plt.show()
 
-fig1name = './sin_min.png'
+fig1name = './prueba03.png'
 print 'Saving Fig. 1 to:', fig1name
 fig1.savefig(fig1name, bbox_inches='tight')
 

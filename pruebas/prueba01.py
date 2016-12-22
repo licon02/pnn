@@ -1,4 +1,7 @@
 #!/usr/bin/python
+#prueba para graficar prediccion de senal senoidal
+#prediccion muy erronea
+
 from __future__ import division
 import numpy as np
 import pylab as pl
@@ -89,7 +92,7 @@ pl.grid()
 pl.legend(loc='lower right',ncol=2,fontsize=fsize)
 pl.title('Target range = [0,1]',fontsize=fsize)
 
-fig1name = './sin_min.png'
+fig1name = './prueba01.png'
 print 'Saving Fig. 1 to:', fig1name
 fig1.savefig(fig1name, bbox_inches='tight')
 

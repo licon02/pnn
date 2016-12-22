@@ -1,7 +1,7 @@
 #!/usr/bin/python
 #prueba de red LSTM
-#genera grafica de las senales
-#entrada escalon
+#genera grafica de las senales de entrada y la respuesta de la redes
+#entrada senoidal
 from __future__ import division
 import numpy as np
 
@@ -25,11 +25,10 @@ A = 10              #amplitud
 Tiempo = 5         #tiempo total de muestreo
 #NN input signal:
 t0 = np.arange(0,Tiempo,Ts)   #genera un vector de n hasta N, con incrementos de i (n,N,i)
-
-data = [1] * 3 + [2] * 3
-data *= 3
-print data
-print len(data)
+#valor en el instante t0
+#np.sin(Wn*t0)  Wn=2*pi*f   t0=instante de tiempo
+data = A*np.cos(2*np.pi*f*t0)     #senal de entrada a la red
+print 'numero de datos de entrenamiento %i'%len(data)
 
 net = buildNetwork(1, 15, 1,hiddenclass=LSTMLayer, outputbias=False, recurrent=True)
 
@@ -74,10 +73,10 @@ plt.xlabel('Time',fontsize=fsize)
 plt.ylabel('Amplitude',fontsize=fsize)
 plt.grid()
 plt.title('Target range = [0,%0.1f]'%len(data),fontsize=fsize)
-plt.xlim(0,len(data))
-plt.ylim(0,1.5*np.max(y1))
+plt.xlim(1.2*np.min(t0),1.2*np.max(t0))
+plt.ylim(1.2*np.min(y1),1.2*np.max(y1))
 
-fig1name = './prueba04.png'
+fig1name = './prueba04_b_fig1.png'
 print 'Saving Fig. 1 to:', fig1name
 fig1.savefig(fig1name, bbox_inches='tight')
 
@@ -85,6 +84,10 @@ fig2 = plt.figure(2)
 plt.plot(range(0, EPOCHS, EPOCHS_PER_CYCLE), train_errors)
 plt.xlabel('epoch')
 plt.ylabel('error')
+
+fig2name = './prueba04_b_fig2.png'
+print 'Saving Fig. 2 to:', fig2name
+fig2.savefig(fig2name, bbox_inches='tight')
 
 plt.show()
 

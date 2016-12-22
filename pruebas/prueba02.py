@@ -1,3 +1,7 @@
+#!/usr/bin/python
+#prueba de red LSTM
+#genera grafica del error
+
 from pybrain.datasets import SequentialDataSet
 from itertools import cycle
 from pybrain.supervised import RPropMinusTrainer
