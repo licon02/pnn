@@ -1,5 +1,5 @@
 #!/usr/bin/python
-#entrenamiento mediante rprop por numero de aproximaciones
+#entrenamiento mediante backpropagation por numero de aproximaciones
 #entrenamiento standard y paralelo
 #mezcla prueba0 y prueba 03
 
@@ -7,9 +7,11 @@ from __future__ import division
 import numpy as np
 import pylab as pl
 
-import pybrain.tools.shortcuts as pybrain_tools
 import pybrain.datasets
+
+import pybrain.tools.shortcuts as pybrain_tools
 import pybrain.supervised.trainers.rprop as pybrain_rprop
+
 import multiprocessing
 import timeit
 
@@ -67,7 +69,7 @@ def standard_train(epochs = 50):#50 aproximaciones por default
     print 'entrenando red standard '
     #print 'entrenando red standard, {}'.format(net)
     data = init_sin_dataset()
-    trainer = pybrain_rprop.RPropMinusTrainer(net, dataset=data)#red, datos de entrenamiento
+    trainer = pybrain_rprop.BackpropTrainer(net, dataset=data)#red, datos de entrenamiento
     trainer.trainEpochs(epochs)#numero de iteraciones
     chart_original_output(data,net)#graficar dataset
 
@@ -81,9 +83,9 @@ def multithreaded_train(epochs=50,threads=2):#50 aproximaciones,8 hilos por defa
     for n in range(threads):
         nets.append(pybrain_tools.buildNetwork(1, 20, 1))#ajusta la red n a 1 entradas,2 capas ocultas,1 salida
         nets[n].randomize()#ajusta aleatoriamente los parametros de la red n
-        print 'entrenando red multihilo '
+        print 'entrenando red multihilo {} '.format(n)
         #print 'entrenando red multihilo {} {}'.format(n,nets[n])
-        trainers.append(pybrain_rprop.RPropMinusTrainer(nets[n], dataset=data))#red n, datos de entrenamiento
+        trainers.append(pybrain_rprop.BackpropTrainer(nets[n], dataset=data))#red n, datos de entrenamiento
         processes.append(multiprocessing.Process(target=trainers[n].trainEpochs(epochs)))#numero de iteraciones para red n
         processes[n].start()
     
@@ -98,7 +100,7 @@ def multithreaded_train(epochs=50,threads=2):#50 aproximaciones,8 hilos por defa
 
 
 if __name__ == '__main__':
-    epochs = 500#numero de iteraciones de la red
+    epochs = 1500#numero de iteraciones de la red
     threads = 4#numero de hilos/procesos
     iterations_standard = 4#numero de veces que se repite la funcion en timeit
     iterations_multi = 1#numero de veces que se repite la funcion en timeit
