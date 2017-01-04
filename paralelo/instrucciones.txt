@@ -1,0 +1,1 @@
+ejecuta el script run.sh o run2.sh desde consola
